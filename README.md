@@ -7,7 +7,7 @@
 
 ## Mobile
 
-[![Mobile](https://github.com/HaktanAlbayrak/react-movie-app/blob/main/src/assets/movie-app-mobile.png?raw=true)
+[![Mobile](https://github.com/HaktanAlbayrak/react-movie-app/blob/main/src/assets/movie-app--mobile.png?raw=true)
 ](https://react-movie-app-pied.vercel.app/)
 
 ## Technologies used
