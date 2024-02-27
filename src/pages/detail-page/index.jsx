@@ -16,6 +16,7 @@ import {
   Image,
   Spinner,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -32,16 +33,25 @@ import {
   ratingToPercentage,
   resolveRatingColor,
 } from '../../utils/helpers';
+import { useAuth } from '../../context/useAuth';
+import { useFirestore } from '../../services/firestore';
 
 const DetailsPage = () => {
   const router = useParams();
   const { type, id } = router;
+
+  const { user } = useAuth();
+  const { addToWatchlist, checkIfInWatchlist, removeFromWatchlist } =
+    useFirestore();
+
+  const toast = useToast();
 
   const [details, setDetails] = useState({});
   const [cast, setCast] = useState([]);
   const [video, setVideo] = useState(null);
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isInWatchlist, setIsInWatchlist] = useState(false);
 
   //   useEffect(() => {
   //     setLoading(true);
@@ -94,6 +104,50 @@ const DetailsPage = () => {
     fetchData();
   }, [type, id]);
 
+  const handleSaveToWatchlist = async () => {
+    if (!user) {
+      toast({
+        title: 'Login to add to watchlist',
+        status: 'error',
+        isClosable: true,
+        position: 'top-center',
+      });
+      return;
+    }
+
+    const data = {
+      id: details?.id,
+      title: details?.title || details?.name,
+      type: type,
+      poster_path: details?.poster_path,
+      relaseDate: details?.release_date || details?.first_air_date,
+      vote_average: details?.vote_average,
+      overview: details?.overview,
+    };
+    console.log('🚀 ~ handleSaveToWatchlist ~ data:', data);
+
+    const dataId = details?.id.toString();
+    await addToWatchlist(user?.uid, dataId, data);
+    const isSetToWatchlist = await checkIfInWatchlist(user?.uid, dataId);
+    setIsInWatchlist(isSetToWatchlist);
+  };
+
+  useEffect(() => {
+    if (!user) {
+      setIsInWatchlist(false);
+      return;
+    }
+    checkIfInWatchlist(user?.uid, id).then((data) => {
+      setIsInWatchlist(data);
+    });
+  }, [id, user, checkIfInWatchlist]);
+
+  const handleRemoveFromWatchlist = async () => {
+    await removeFromWatchlist(user?.uid, id);
+    const isSetToWatchlist = await checkIfInWatchlist(user?.uid, id);
+    setIsInWatchlist(isSetToWatchlist);
+  };
+
   if (loading) {
     return (
       <Flex justify='center'>
@@ -104,7 +158,7 @@ const DetailsPage = () => {
 
   const title = details?.title || details?.name;
   const relaseDate =
-    type === 'tv' ? details?.first_air_date : details?.relase_date;
+    type === 'tv' ? details?.first_air_date : details?.release_date;
 
   return (
     <Box>
@@ -180,22 +234,24 @@ const DetailsPage = () => {
                 <Text display={{ base: 'none', md: 'initial' }}>
                   User Score
                 </Text>
-                <Button
-                  display='none'
-                  leftIcon={<CheckCircleIcon />}
-                  colorScheme='green'
-                  variant='outline'
-                  onClick={() => console.log('click')}
-                >
-                  In Watchlist
-                </Button>
-                <Button
-                  leftIcon={<SmallAddIcon />}
-                  variant='outline'
-                  onClick={() => console.log('click')}
-                >
-                  Add to watchlist
-                </Button>
+                {isInWatchlist ? (
+                  <Button
+                    leftIcon={<CheckCircleIcon />}
+                    colorScheme='green'
+                    variant='outline'
+                    onClick={handleRemoveFromWatchlist}
+                  >
+                    In Watchlist
+                  </Button>
+                ) : (
+                  <Button
+                    leftIcon={<SmallAddIcon />}
+                    variant='outline'
+                    onClick={handleSaveToWatchlist}
+                  >
+                    Add to watchlist
+                  </Button>
+                )}
               </Flex>
               <Text color='gray.400' fontSize='sm' fontStyle='italic' my='5'>
                 {details?.tagline}

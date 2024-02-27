@@ -11,6 +11,8 @@ import DetailsPage from './pages/detail-page/index.jsx';
 import Movies from './pages/movies';
 import Search from './pages/search';
 import Shows from './pages/shows';
+import WatchList from './pages/watchList/index.jsx';
+import Protected from './components/routes/Protected.jsx';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +38,14 @@ const router = createBrowserRouter([
       {
         path: '/:type/:id',
         element: <DetailsPage />,
+      },
+      {
+        path: '/watchlist',
+        element: (
+          <Protected>
+            <WatchList />
+          </Protected>
+        ),
       },
     ],
   },
