@@ -53,20 +53,6 @@ const DetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [isInWatchlist, setIsInWatchlist] = useState(false);
 
-  //   useEffect(() => {
-  //     setLoading(true);
-  //     fetchDetails(type, id)
-  //       .then((res) => {
-  //         setDetails(res);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       })
-  //       .finally(() => {
-  //         setLoading(false);
-  //       });
-  //   }, [type, id]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {

@@ -71,7 +71,6 @@ const Shows = () => {
             )
           )}
       </Grid>
-      {/* Pagination */}
       <PaginationComponent
         activePage={activePage}
         totalPages={totalPages}
