@@ -226,7 +226,13 @@ const DetailsPage = () => {
           {cast &&
             cast?.map((actor) => (
               <Box key={actor?.id} minW='150px'>
-                <Image src={`${imagePath}/${actor?.profile_path}`} />
+                <Image
+                  src={`${imagePath}/${actor?.profile_path}`}
+                  w='100%'
+                  height='225px'
+                  objectFit='cover'
+                  borderRadius='sm'
+                />
               </Box>
             ))}
         </Flex>

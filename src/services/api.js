@@ -44,3 +44,33 @@ export const fetchVideos = async (type, id) => {
 
   return data;
 };
+
+// DISCOVER
+
+export const fetchMovies = async (page, sortBy) => {
+  const { data } = await axios.get(
+    `${baseUrl}/discover/movie?api_key=${apiKey}&page=${page}&sort_by=${sortBy}`
+  );
+
+  return data;
+};
+
+// TV SHOWS
+
+export const fetchTvSeries = async (page, sortBy) => {
+  const { data } = await axios.get(
+    `${baseUrl}/discover/tv?api_key=${apiKey}&page=${page}&sort_by=${sortBy}`
+  );
+
+  return data;
+};
+
+// SEARCH
+
+export const searchData = async (query, page) => {
+  const { data } = await axios.get(
+    `${baseUrl}/search/multi?api_key=${apiKey}&query=${query}&page=${page}`
+  );
+
+  return data;
+};
