@@ -15,7 +15,6 @@ import { imagePath } from '../services/api';
 import { useFirestore } from '../services/firestore';
 
 const WatchlistCard = ({ type, item, setWatchlist }) => {
-  console.log('🚀 ~ WatchlistCard ~ item:', item);
   const { removeFromWatchlist } = useFirestore();
   const { user } = useAuth();
 

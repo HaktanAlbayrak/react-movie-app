@@ -24,7 +24,6 @@ const Search = () => {
     setIsLoading(true);
     searchData(searchValue, activePage)
       .then((res) => {
-        console.log(res, 'res');
         setData(res?.results);
         setActivePage(res?.page);
         setTotalPages(res?.total_pages);

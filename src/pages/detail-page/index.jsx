@@ -124,7 +124,6 @@ const DetailsPage = () => {
       vote_average: details?.vote_average,
       overview: details?.overview,
     };
-    console.log('🚀 ~ handleSaveToWatchlist ~ data:', data);
 
     const dataId = details?.id.toString();
     await addToWatchlist(user?.uid, dataId, data);

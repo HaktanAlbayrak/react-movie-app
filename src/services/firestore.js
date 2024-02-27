@@ -14,8 +14,9 @@ import { useCallback } from 'react';
 export const useFirestore = () => {
   const toast = useToast();
   const addDocument = async (collectionName, data) => {
+    // Add a new document with a generated id.
     const docRef = await addDoc(collection(db, collectionName), data);
-    console.log('Document written with ID: ', docRef.id);
+    return docRef;
   };
 
   const addToWatchlist = async (userId, dataId, data) => {
