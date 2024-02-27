@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import theme from '../theme.js';
 import App from './App.jsx';
+import { AuthProvider } from './context/authProvider.jsx';
 import './index.css';
 import Home from './pages/Home.jsx';
 import DetailsPage from './pages/detail-page/index.jsx';
@@ -44,7 +45,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <ChakraProvider theme={theme}>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </ChakraProvider>
   </React.StrictMode>
 );
